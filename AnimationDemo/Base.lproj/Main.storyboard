@@ -43,6 +43,7 @@
                     </view>
                     <connections>
                         <outlet property="sceneView" destination="RNg-On-hJd" id="RGZ-Lb-0lf"/>
+                        <outlet property="slider" destination="v2n-Uq-kbL" id="TLi-A2-iCG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>

@@ -15,8 +15,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     
     var heroNode = SCNNode()
-    var animationLength: Float!
+    var animationLength: TimeInterval!
     var animationFrame: Float!
+    
+    @IBOutlet weak var slider: UISlider!
     
     var scene: SCNScene!
     
@@ -30,7 +32,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        scene = SCNScene(named: "art.scnassets/dahuangfeng.DAE")!
+        scene = SCNScene(named: "art.scnassets/dahuangfeng/dahuangfeng2.scn")!
         // loadModel()
         
         // Set the scene to the view
@@ -38,15 +40,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         heroNode = scene.rootNode.childNode(withName: "Group001", recursively: true)!
         
-        let animationPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: "art.scnassets/dahuangfeng.DAE")
+        let animationPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: "art.scnassets/dahuangfeng/dahuangfeng2.scn")
         
         // Adjust animation blend duration for smooth transitions.
         animationPlayer.animation.blendInDuration = 0.25
         animationPlayer.animation.blendOutDuration  = 0.5
-        animationPlayer.stop()
         
+        animationPlayer.stop()
+
         heroNode.addAnimationPlayer(animationPlayer, forKey: "dahuangfeng")
         animationPlayer.play()
+        // slider.value = 0
         
     }
     
@@ -91,8 +95,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let animationPlayer = heroNode.animationPlayer(forKey: "dahuangfeng")
         let animation = animationPlayer?.animation
-        animationLength = Float((animation?.duration)!)
-        animation?.timeOffset = TimeInterval(sender.value * animationLength)
+        animationLength = (animation?.duration)!
+        
+        print("-1-timeOffset-\(animation?.timeOffset)")
+        animation?.timeOffset = Double(sender.value) * animationLength
+        print("-timeOffset-\(animation?.timeOffset)")
         
         animationPlayer?.speed = 0
     }
@@ -117,4 +124,14 @@ extension SCNAnimationPlayer {
         }
         return animationPlayer
     }
+}
+
+extension CAAnimation {
+//    class func loadAnimation(fromSceneNamed sceneName: String) -> CAAnimation {
+//        let scene = SCNScene(named: sceneName)
+//        var animation: CAAnimation!
+//        scene?.rootNode.enumerateChildNodes({ (child, stop) in
+//            <#code#>
+//        })
+//    }
 }
