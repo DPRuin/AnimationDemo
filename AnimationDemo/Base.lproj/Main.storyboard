@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tXr-a1-R10">
+            <objects>
+                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="AnimationDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NX2-oK-Of7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RNg-On-hJd">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </arscnView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="v2n-Uq-kbL">
+                                <rect key="frame" x="8" y="597" width="359" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="Rnd-53-j8M"/>
+                                </connections>
+                            </slider>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RNg-On-hJd" firstAttribute="leading" secondItem="58N-yR-mG0" secondAttribute="leading" id="QO2-TC-4w6"/>
+                            <constraint firstItem="RNg-On-hJd" firstAttribute="top" secondItem="58N-yR-mG0" secondAttribute="top" id="cbl-Ax-8rf"/>
+                            <constraint firstItem="58N-yR-mG0" firstAttribute="trailing" secondItem="v2n-Uq-kbL" secondAttribute="trailing" constant="10" id="cfS-E4-pcr"/>
+                            <constraint firstItem="v2n-Uq-kbL" firstAttribute="leading" secondItem="58N-yR-mG0" secondAttribute="leading" constant="10" id="kMb-s6-ebf"/>
+                            <constraint firstItem="58N-yR-mG0" firstAttribute="trailing" secondItem="RNg-On-hJd" secondAttribute="trailing" id="o0g-Bh-H82"/>
+                            <constraint firstItem="58N-yR-mG0" firstAttribute="bottom" secondItem="RNg-On-hJd" secondAttribute="bottom" id="os6-zY-y65"/>
+                            <constraint firstItem="58N-yR-mG0" firstAttribute="bottom" secondItem="v2n-Uq-kbL" secondAttribute="bottom" constant="40" id="p4D-1g-rxC"/>
+                            <constraint firstItem="v2n-Uq-kbL" firstAttribute="centerX" secondItem="NX2-oK-Of7" secondAttribute="centerX" id="uKj-Nr-4rk"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="58N-yR-mG0"/>
+                    </view>
+                    <connections>
+                        <outlet property="sceneView" destination="RNg-On-hJd" id="RGZ-Lb-0lf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
