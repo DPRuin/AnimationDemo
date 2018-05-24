@@ -30,15 +30,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        scene = SCNScene(named: "art.scnassets/hero.scn")!
+        scene = SCNScene(named: "art.scnassets/dahuangfeng.DAE")!
         // loadModel()
         
         // Set the scene to the view
         sceneView.scene = scene
         
-        heroNode = scene.rootNode.childNode(withName: "hero", recursively: true)!
+        heroNode = scene.rootNode.childNode(withName: "Group001", recursively: true)!
         
-        let animationPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: "art.scnassets/jumping.dae")
+        let animationPlayer = SCNAnimationPlayer.loadAnimation(fromSceneNamed: "art.scnassets/dahuangfeng.DAE")
         
         // Adjust animation blend duration for smooth transitions.
         animationPlayer.animation.blendInDuration = 0.25
@@ -93,6 +93,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let animation = animationPlayer?.animation
         animationLength = Float((animation?.duration)!)
         animation?.timeOffset = TimeInterval(sender.value * animationLength)
+        
         animationPlayer?.speed = 0
     }
     
@@ -109,6 +110,7 @@ extension SCNAnimationPlayer {
 //        dhfnode.enumerateChildNodes { (child, stop) in
         scene.rootNode.enumerateChildNodes { (child, stop) in
             if !child.animationKeys.isEmpty {
+                print("--\(child.name)--\(child.animationKeys)")
                 animationPlayer = child.animationPlayer(forKey: child.animationKeys[0])
                 stop.pointee = true
             }
