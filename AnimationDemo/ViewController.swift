@@ -34,7 +34,7 @@ let Animations: [(name: String, file: String)] = [
     ("Dancing",  "dancing.dae"),
     ("Jumping", "jumping.dae")]
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController {
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -85,6 +85,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.addGestureRecognizer(tap)
         
         slider.isHidden = true
+        heroNode.isHidden = true
+        
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,9 +95,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
 
         // Run the view's session
         sceneView.session.run(configuration)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -143,6 +148,31 @@ extension SCNAnimationPlayer {
             }
         }
         return animationPlayer
+    }
+}
+
+
+extension ViewController: ARSCNViewDelegate {
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        // 已经显示后不再更新位置
+        if !heroNode.isHidden {return}
+        
+        if anchor is ARPlaneAnchor {
+            // heroNode.simdTransform = anchor.transform
+            heroNode.simdPosition = anchor.transform.translation
+            heroNode.isHidden = false
+            
+        }
+        
+    }
+    
+}
+
+extension float4x4 {
+    var translation: float3 {
+        let translation = self.columns.3
+        return float3(translation.x, translation.y, translation.z)
     }
 }
 
