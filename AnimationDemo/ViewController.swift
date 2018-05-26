@@ -48,6 +48,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var slider: UISlider!
     
+    @IBOutlet weak var placeButton: UIButton!
     var scene: SCNScene!
     
     override func viewDidLoad() {
@@ -85,9 +86,12 @@ class ViewController: UIViewController {
         sceneView.addGestureRecognizer(tap)
         
         slider.isHidden = true
-        heroNode.isHidden = true
+        // heroNode.isHidden = true
         
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        
+        // heroNode.scale = SCNVector3Make(0.1, 0.1, 0.1)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,6 +138,20 @@ class ViewController: UIViewController {
         animation?.timeOffset = Double(sender.value) * animationLength
         animationPlayer?.speed = 0
     }
+    
+    @IBAction func placeButtonDidClick(_ sender: UIButton) {
+        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
+            return
+        }
+        // heroNode.simdPosition = transform.translation
+        // heroNode.position = SCNVector3Make(transform.translation.x, transform.translation.y, -2)
+        // heroNode.eulerAngles = SCNVector3Make(0, 0, Float(Double.pi / 2))
+        heroNode.position = SCNVector3Make(0, 0, -3)
+        
+        print("-transform-\(transform.translation)")
+        heroNode.isHidden = false
+    }
+    
 }
 
 extension SCNAnimationPlayer {
@@ -155,16 +173,33 @@ extension SCNAnimationPlayer {
 extension ViewController: ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        
         // 已经显示后不再更新位置
         if !heroNode.isHidden {return}
-        
-        if anchor is ARPlaneAnchor {
-            // heroNode.simdTransform = anchor.transform
-            heroNode.simdPosition = anchor.transform.translation
-            heroNode.isHidden = false
-            
+        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
+            return
         }
+        // heroNode.simdTransform = transform
+        // heroNode.position = SCNVector3Make(transform.translation.x, transform.translation.y, -2)
+        heroNode.position = SCNVector3Make(0, 0, -3)
+        heroNode.isHidden = false
         
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        guard let pointOfView = sceneView.pointOfView else { return }
+        
+        let placedObjectIsInView = sceneView.isNode(heroNode, insideFrustumOf: pointOfView)
+        
+        if placedObjectIsInView { // 隐藏按钮
+            DispatchQueue.main.async {
+                self.placeButton.isHidden = true
+            }
+        } else { // 显示按钮
+            DispatchQueue.main.async {
+                self.placeButton.isHidden = false
+            }
+        }
     }
     
 }
@@ -175,4 +210,5 @@ extension float4x4 {
         return float3(translation.x, translation.y, translation.z)
     }
 }
+
 

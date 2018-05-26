@@ -27,10 +27,19 @@
                                     <action selector="sliderValueChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="Rnd-53-j8M"/>
                                 </connections>
                             </slider>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13h-wy-lSo">
+                                <rect key="frame" x="164" y="318" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="placeButtonDidClick:" destination="BV1-FR-VrT" eventType="touchUpInside" id="QQu-rK-1id"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="13h-wy-lSo" firstAttribute="centerY" secondItem="NX2-oK-Of7" secondAttribute="centerY" id="Bqo-MB-mHS"/>
                             <constraint firstItem="RNg-On-hJd" firstAttribute="leading" secondItem="58N-yR-mG0" secondAttribute="leading" id="QO2-TC-4w6"/>
+                            <constraint firstItem="13h-wy-lSo" firstAttribute="centerX" secondItem="NX2-oK-Of7" secondAttribute="centerX" id="YsF-hq-fYQ"/>
                             <constraint firstItem="RNg-On-hJd" firstAttribute="top" secondItem="58N-yR-mG0" secondAttribute="top" id="cbl-Ax-8rf"/>
                             <constraint firstItem="58N-yR-mG0" firstAttribute="trailing" secondItem="v2n-Uq-kbL" secondAttribute="trailing" constant="10" id="cfS-E4-pcr"/>
                             <constraint firstItem="v2n-Uq-kbL" firstAttribute="leading" secondItem="58N-yR-mG0" secondAttribute="leading" constant="10" id="kMb-s6-ebf"/>
@@ -42,6 +51,7 @@
                         <viewLayoutGuide key="safeArea" id="58N-yR-mG0"/>
                     </view>
                     <connections>
+                        <outlet property="placeButton" destination="13h-wy-lSo" id="yds-ly-Cmf"/>
                         <outlet property="sceneView" destination="RNg-On-hJd" id="RGZ-Lb-0lf"/>
                         <outlet property="slider" destination="v2n-Uq-kbL" id="TLi-A2-iCG"/>
                     </connections>
