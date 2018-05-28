@@ -88,7 +88,7 @@ class ViewController: UIViewController {
         slider.isHidden = true
         // heroNode.isHidden = true
         
-        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        // sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
         // heroNode.scale = SCNVector3Make(0.1, 0.1, 0.1)
         
@@ -140,15 +140,24 @@ class ViewController: UIViewController {
     }
     
     @IBAction func placeButtonDidClick(_ sender: UIButton) {
-        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
-            return
-        }
-        // heroNode.simdPosition = transform.translation
-        // heroNode.position = SCNVector3Make(transform.translation.x, transform.translation.y, -2)
-        // heroNode.eulerAngles = SCNVector3Make(0, 0, Float(Double.pi / 2))
-        heroNode.position = SCNVector3Make(0, 0, -3)
+//        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
+//            return
+//        }
+//        // heroNode.simdPosition = transform.translation
+//        heroNode.position = SCNVector3Make(transform.translation.x, transform.translation.y, -2)
+//        // heroNode.eulerAngles = SCNVector3Make(0, 0, Float(Double.pi / 2))
+//        // heroNode.position = SCNVector3Make(0, 0, -3)
         
-        print("-transform-\(transform.translation)")
+        
+        guard let centerPoint = sceneView.pointOfView else{return}
+        
+        let cameraTransform = centerPoint.transform
+        let cameraLocation = SCNVector3(x:cameraTransform.m41, y: cameraTransform.m42, z:cameraTransform.m43)
+        let cameraOrientation = SCNVector3(x: -cameraTransform.m31, y: -cameraTransform.m32, z: -cameraTransform.m33)
+        let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y , cameraLocation.z + cameraOrientation.z)
+        heroNode.position = cameraPosition
+        
+        print("-transform-\(cameraPosition)")
         heroNode.isHidden = false
     }
     
@@ -176,13 +185,21 @@ extension ViewController: ARSCNViewDelegate {
         
         // 已经显示后不再更新位置
         if !heroNode.isHidden {return}
-        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
-            return
-        }
-        // heroNode.simdTransform = transform
-        // heroNode.position = SCNVector3Make(transform.translation.x, transform.translation.y, -2)
-        heroNode.position = SCNVector3Make(0, 0, -3)
-        heroNode.isHidden = false
+//        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
+//            return
+//        }
+//        // heroNode.simdTransform = transform
+//        heroNode.position = SCNVector3Make(transform.translation.x, transform.translation.y, -2)
+//        // heroNode.position = SCNVector3Make(0, 0, -3)
+//        heroNode.isHidden = false
+        
+        guard let centerPoint = sceneView.pointOfView else{return}
+        
+        let cameraTransform = centerPoint.transform
+        let cameraLocation = SCNVector3(x:cameraTransform.m41, y: cameraTransform.m42, z:cameraTransform.m43)
+        let cameraOrientation = SCNVector3(x: -cameraTransform.m31, y: -cameraTransform.m32, z: -cameraTransform.m33)
+        let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y , cameraLocation.z + cameraOrientation.z)
+        heroNode.position = cameraPosition
         
     }
     
