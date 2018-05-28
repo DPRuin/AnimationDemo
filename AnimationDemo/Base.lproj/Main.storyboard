@@ -27,9 +27,9 @@
                                     <action selector="sliderValueChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="Rnd-53-j8M"/>
                                 </connections>
                             </slider>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13h-wy-lSo">
-                                <rect key="frame" x="164" y="318" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13h-wy-lSo">
+                                <rect key="frame" x="156" y="302" width="63" height="63"/>
+                                <state key="normal" image="reset"/>
                                 <connections>
                                     <action selector="placeButtonDidClick:" destination="BV1-FR-VrT" eventType="touchUpInside" id="QQu-rK-1id"/>
                                 </connections>
@@ -60,4 +60,7 @@
             </objects>
         </scene>
     </scenes>
+    <resources>
+        <image name="reset" width="63" height="63"/>
+    </resources>
 </document>

@@ -86,11 +86,11 @@ class ViewController: UIViewController {
         sceneView.addGestureRecognizer(tap)
         
         slider.isHidden = true
-        // heroNode.isHidden = true
+        heroNode.isHidden = true
         
         // sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-        
         // heroNode.scale = SCNVector3Make(0.1, 0.1, 0.1)
+        placeHeroNode()
         
     }
     
@@ -148,17 +148,27 @@ class ViewController: UIViewController {
 //        // heroNode.eulerAngles = SCNVector3Make(0, 0, Float(Double.pi / 2))
 //        // heroNode.position = SCNVector3Make(0, 0, -3)
         
-        
-        guard let centerPoint = sceneView.pointOfView else{return}
+        placeHeroNode()
+        heroNode.isHidden = false
+    }
+    
+    func placeHeroNode() {
+        // 视口
+        guard let centerPoint = sceneView.pointOfView else {return}
         
         let cameraTransform = centerPoint.transform
         let cameraLocation = SCNVector3(x:cameraTransform.m41, y: cameraTransform.m42, z:cameraTransform.m43)
+        // 方向
         let cameraOrientation = SCNVector3(x: -cameraTransform.m31, y: -cameraTransform.m32, z: -cameraTransform.m33)
         let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y , cameraLocation.z + cameraOrientation.z)
         heroNode.position = cameraPosition
         
-        print("-transform-\(cameraPosition)")
-        heroNode.isHidden = false
+        
+        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
+            return
+        }
+        print("-pointView-\(cameraTransform)")
+        print("-camera-\(transform)")
     }
     
 }
@@ -193,19 +203,15 @@ extension ViewController: ARSCNViewDelegate {
 //        // heroNode.position = SCNVector3Make(0, 0, -3)
 //        heroNode.isHidden = false
         
-        guard let centerPoint = sceneView.pointOfView else{return}
-        
-        let cameraTransform = centerPoint.transform
-        let cameraLocation = SCNVector3(x:cameraTransform.m41, y: cameraTransform.m42, z:cameraTransform.m43)
-        let cameraOrientation = SCNVector3(x: -cameraTransform.m31, y: -cameraTransform.m32, z: -cameraTransform.m33)
-        let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y , cameraLocation.z + cameraOrientation.z)
-        heroNode.position = cameraPosition
+        placeHeroNode()
+        heroNode.isHidden = false
         
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         guard let pointOfView = sceneView.pointOfView else { return }
         
+        // heroNode是否在视口中显示
         let placedObjectIsInView = sceneView.isNode(heroNode, insideFrustumOf: pointOfView)
         
         if placedObjectIsInView { // 隐藏按钮
