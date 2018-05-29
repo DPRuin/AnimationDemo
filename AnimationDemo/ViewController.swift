@@ -86,7 +86,7 @@ class ViewController: UIViewController {
         sceneView.addGestureRecognizer(tap)
         
         slider.isHidden = true
-        heroNode.isHidden = true
+        // heroNode.isHidden = true
         
         // sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         // heroNode.scale = SCNVector3Make(0.1, 0.1, 0.1)
@@ -163,12 +163,12 @@ class ViewController: UIViewController {
         let cameraPosition = SCNVector3Make(cameraLocation.x + cameraOrientation.x, cameraLocation.y + cameraOrientation.y , cameraLocation.z + cameraOrientation.z)
         heroNode.position = cameraPosition
         
+//        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
+//            return
+//        }
+//        print("-pointView-\(cameraTransform)")
+//        print("-camera-\(transform)")
         
-        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
-            return
-        }
-        print("-pointView-\(cameraTransform)")
-        print("-camera-\(transform)")
     }
     
 }
@@ -224,7 +224,6 @@ extension ViewController: ARSCNViewDelegate {
             }
         }
     }
-    
 }
 
 extension float4x4 {
