@@ -29,10 +29,16 @@ struct CycleArray<T> {
     }
 }
 
+// let Animations: [(name: String, file: String)] = [
+//    ("Idle",  "idle.dae"),
+//    ("Dancing",  "dancing.dae"),
+//    ("Jumping", "jumping.dae")]
+
 let Animations: [(name: String, file: String)] = [
-    ("Idle",  "idle.dae"),
+    ("Jumping", "jumping.dae"),
     ("Dancing",  "dancing.dae"),
-    ("Jumping", "jumping.dae")]
+    ("Idle",  "idle.dae")
+    ]
 
 class ViewController: UIViewController {
 
@@ -59,6 +65,7 @@ class ViewController: UIViewController {
         
         // Show statistics such as fps and timing information
         // sceneView.showsStatistics = true
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
         // Create a new scene
         scene = SCNScene(named: "art.scnassets/hero.scn")!
@@ -90,8 +97,7 @@ class ViewController: UIViewController {
         
         // sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         // heroNode.scale = SCNVector3Make(0.1, 0.1, 0.1)
-        placeHeroNode()
-        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,6 +110,11 @@ class ViewController: UIViewController {
         // Run the view's session
         sceneView.session.run(configuration)
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        placeHeroNode()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -120,14 +131,36 @@ class ViewController: UIViewController {
     
 
     @objc func tapDidClick(_ gesture: UITapGestureRecognizer) {
+        
         let currAnimation = heroAnimations.currentElement
-        let nextAnimation = heroAnimations.cycle()
-        
+
+        let player = heroNode.animationPlayer(forKey: currAnimation!.name)
         // Stop current animation.
-        heroNode.animationPlayer(forKey: currAnimation!.name)!.stop(withBlendOutDuration: 1.0)
+        //player?.stop(withBlendOutDuration: 1.0)
         
-        // Play next animation.
-        heroNode.animationPlayer(forKey: nextAnimation!.name)!.play()
+        
+        let animation = self.animationPlayer?.animation
+
+        let animationEvent = SCNAnimationEvent(keyTime: 2.0) { (_, _, _) in
+            print("--hh")
+            player?.stop(withBlendOutDuration: 1.0)
+        }
+        animation?.animationEvents = [animationEvent]
+        animation?.isCumulative = true
+        animation?.timeOffset = (animation?.duration)! * 0.5
+        print("-duration-\(String(describing: animation?.duration))")
+        // animationPlayer?.speed = 0
+        // player?.play()
+
+        // 切换动画
+//        let currAnimation = heroAnimations.currentElement
+//        let nextAnimation = heroAnimations.cycle()
+//
+//        // Stop current animation.
+//        heroNode.animationPlayer(forKey: currAnimation!.name)!.stop(withBlendOutDuration: 1.0)
+//
+//        // Play next animation.
+//        heroNode.animationPlayer(forKey: nextAnimation!.name)!.play()
         
     }
     
@@ -190,9 +223,14 @@ extension SCNAnimationPlayer {
 
 
 extension ViewController: ARSCNViewDelegate {
+    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        print("--nodeFor")
+        placeHeroNode()
+        return heroNode
+    }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        
+        print("--didAdd")
         // 已经显示后不再更新位置
         if !heroNode.isHidden {return}
 //        guard let transform = sceneView.session.currentFrame?.camera.transform  else {
@@ -209,6 +247,7 @@ extension ViewController: ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        print("--updateAtTime")
         guard let pointOfView = sceneView.pointOfView else { return }
         
         // heroNode是否在视口中显示
